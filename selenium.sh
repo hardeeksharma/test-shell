@@ -1,33 +1,15 @@
-#!/bin/bash
-
-# Update and upgrade system packages
 sudo apt-get update
-sudo apt-get upgrade -y
+sudo apt-get upgrade
 
-# Download and install Google Chrome
+sudo apt-get install software-properties-common
+sudo apt-get install build-essential unzip libxi6 libssl-dev libffi-dev python3-pip python3-venv xvfb libgconf-2-4 python3-pip -y
+pip3 install selenium
+
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt install ./google-chrome-stable_current_amd64.deb -y
-sudo apt-get --fix-broken install
+sudo apt-get install ./google-chrome-stable_current_amd64.deb -y
 
-# Install necessary dependencies
-sudo apt-get install build-essential libssl-dev libffi-dev python3-pip python3-venv xvfb -y
+wget https://storage.googleapis.com/chrome-for-testing-public/124.0.6367.201/linux64/chromedriver-linux64.zip
 
-# Set up virtual environment and install dependencies
-python3 -m venv .venv
-source .venv/bin/activate
-pip3 install xvfbwrapper selenium webdriver-manager
+unzip chromedriver-linux64.zip 
 
-# Create the script file
-sudo nano run_bg.sh <<EOF
-#!/usr/bin/env bash
-set -e
-source .venv/bin/activate
-xvfb-run -a python /home/ubuntu/play.py
-EOF
-
-# Make the script executable
-sudo chmod +x run_bg.sh
-
-# Add crontab entries
-#(crontab -l ; echo "*/5 * * * * sleep 30 && /path/to/run_bg.sh") | crontab -
-#(crontab -l ; echo "*/5 * * * * sleep 15 && /path/to/run_bg.sh") | crontab -
+sudo mv chromedriver-linux64 /usr/bin/chromedriver
